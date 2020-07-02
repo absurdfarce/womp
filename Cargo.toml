@@ -1,0 +1,7 @@
+[package]
+name = "womp"
+version = "0.1.0"
+authors = ["Bret McGuire <bret.mcguire@gmail.com>"]
+
+[dependencies]
+procfs = "0.7.9"
