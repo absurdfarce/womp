@@ -5,8 +5,8 @@ use procfs::process::Process;
 
 extern crate procfs;
 
-#[macro_use]
 extern crate partial_application;
+use partial_application::partial;
 
 // What's wrong with, say, "netstat -tlp4 --numeric-ports"?
 //
