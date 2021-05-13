@@ -7,18 +7,13 @@ fn main() {
     let port_arg = arg.map(|s| s.to_string().parse::<u16>().unwrap()).unwrap();
     println!("Searching for port {:?}", port_arg);
 
-    let tcp_entry = match womp::find_tcp_entry(port_arg) {
-        Err(errstr) => {
+    let proc_entry = match womp::find_process_for_port(port_arg) {
+
+        Err(womp::WompError::TCPError(errstr)) => {
             println!("{}", errstr);
             std::process::exit(1);
         }
-        Ok(entry) => entry
-    };
-    println!("Found TCP entry: {:?}", tcp_entry);
-
-    let proc_entry = match womp::find_process(womp::get_inode(tcp_entry)) {
-
-        Err(errstr) => {
+        Err(womp::WompError::ProcessError(errstr)) => {
             println!("{}", errstr);
             std::process::exit(2);
         }
