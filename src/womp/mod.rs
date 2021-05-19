@@ -1,12 +1,13 @@
 extern crate procfs;
 use self::procfs::net::TcpNetEntry;
-use self::procfs::process::FDInfo;
-use self::procfs::process::FDTarget;
-use self::procfs::process::Process;
+use self::procfs::process::{FDInfo,FDTarget,Process};
 
 extern crate partial_application;
 use self::partial_application::partial;
 use womp::WompError::{TCPError, ProcessError};
+
+extern crate log;
+use self::log::{info};
 
 pub enum WompError {
     /* An error observed when evaluating TCP info */
@@ -40,14 +41,7 @@ fn contains_socket_inode(info:&FDInfo, inode:u32) -> bool {
 fn process_contains_inode(process:&Process, inode:u32) -> bool {
     match process.fd() {
         Err(e) => {
-            /* Something of a special case here.  We're looping through a number of procs to see if they
-             * have an inode matching our target but if we can't get fds for a given process we don't
-             * necessarily want everything to fail.  For now we just log that fact via println!
-             *
-             * TODO: A more robust answer would be great here.  It's also the case that this function
-             * shouldn't be deciding how to log things... it really should be passing this upstream and
-             * letting higher-level functions do the routing of errors as necessary. */
-            println!("Error determining file descriptors for process {:?}, ignoring: {:?}", process.pid, e);
+            info!("Error determining file descriptors for process {:?}, ignoring: {:?}", process.pid, e);
             false
         },
         Ok(fds) => fds.iter().any(partial!(contains_socket_inode => _, inode))

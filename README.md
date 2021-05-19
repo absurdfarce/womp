@@ -10,7 +10,7 @@ You might now be asking yourself why not just use "netstat -tlp4 --numeric-ports
 
 ## Compiling
 
-Shouldn't be much more than "cargo build"
+Shouldn't be much more than "cargo build".  The binary will be named "cli".
 
 ## Running
 
@@ -22,5 +22,5 @@ The program accepts a single arg representing the port number you're inquiring a
 
 In this case the following will help you determine what process is creating your problem:
 
-"target/debug/womp 9042"
+"target/debug/cli 9042"
 

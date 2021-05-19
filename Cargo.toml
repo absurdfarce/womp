@@ -6,6 +6,9 @@ authors = ["Bret McGuire <bret.mcguire@gmail.com>"]
 [dependencies]
 procfs = "0.7.9"
 partial_application = "0.2.0"
+log = "0.4"
+env_logger = "0.8.3"
 
 [[bin]]
 name = "cli"
+path = "src/cli.rs"
