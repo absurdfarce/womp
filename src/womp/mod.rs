@@ -22,7 +22,6 @@ fn find_tcp_entry_in_vec(port:u16, entries:Vec<TcpNetEntry>) -> Option<TcpNetEnt
 
 fn find_tcp_entry(port:u16) -> Result<TcpNetEntry, WompError> {
     match procfs::net::tcp() {
-
         Err(e) => Err(TCPError(format!("Error retrieving TCP entries: {:?}", e))),
         Ok(entries) => match find_tcp_entry_in_vec(port, entries) {
             None => Err(TCPError(format!("Port {:?} appears to be unused", port))),
@@ -41,6 +40,8 @@ fn contains_socket_inode(info:&FDInfo, inode:u32) -> bool {
 fn process_contains_inode(process:&Process, inode:u32) -> bool {
     match process.fd() {
         Err(e) => {
+            // Just log this for information purposes... we don't want to throw it back up
+            // as an error to higher levels
             info!("Error determining file descriptors for process {:?}, ignoring: {:?}", process.pid, e);
             false
         },
@@ -54,7 +55,6 @@ fn find_process_in_vec(inode:u32, processes:Vec<Process>, ) -> Option<Process> {
 
 fn find_process(inode:u32) -> Result<Process, WompError> {
     match procfs::process::all_processes() {
-
         Err(e) => { Err(ProcessError(format!("Error retrieving process entries: {:?}", e))) },
         Ok(procs) => match find_process_in_vec(inode, procs) {
             None => Err(

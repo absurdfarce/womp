@@ -8,6 +8,7 @@ procfs = "0.7.9"
 partial_application = "0.2.0"
 log = "0.4"
 env_logger = "0.8.3"
+clap = "3.0.0-beta.2"
 
 [[bin]]
 name = "cli"
