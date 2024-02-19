@@ -5,11 +5,11 @@ extern crate env_logger;
 use env_logger::Env;
 
 extern crate clap;
-use clap::Clap;
+use clap::Parser;
 
 mod womp;
 
-#[derive(Clap)]
+#[derive(Parser, Debug)]
 struct Options {
     #[clap(short, long)]
     port:u16,

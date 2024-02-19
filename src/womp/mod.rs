@@ -7,7 +7,7 @@ use self::partial_application::partial;
 use womp::WompError::{TCPError, ProcessError};
 
 extern crate log;
-use self::log::{info};
+use self::log::{debug};
 
 pub enum WompError {
     /* An error observed when evaluating TCP info */
@@ -42,7 +42,7 @@ fn process_contains_inode(process:&Process, inode:u32) -> bool {
         Err(e) => {
             // Just log this for information purposes... we don't want to throw it back up
             // as an error to higher levels
-            info!("Error determining file descriptors for process {:?}, ignoring: {:?}", process.pid, e);
+            debug!("Error determining file descriptors for process {:?}, ignoring: {:?}", process.pid, e);
             false
         },
         Ok(fds) => fds.iter().any(partial!(contains_socket_inode => _, inode))
